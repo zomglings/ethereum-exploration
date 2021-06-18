@@ -46,12 +46,12 @@ def init(db):
         block_number UNSIGNED BIG INT,
         from_address VARCHAR(256),
         to_address VARCHAR(256),
-        gas UNSIGNED BIG INT,
-        gas_price UNSIGNED BIG INT,
+        gas TEXT,
+        gas_price TEXT,
         input VARCHAR(256),
         nonce VARCHAR(256),
         transaction_index UNSIGNED INT,
-        value UNSIGNED BIG INT,
+        value TEXT,
         FOREIGN KEY(block_number) REFERENCES blocks(block_number)
     );"""
     cur.execute(create_transactions_table)
@@ -114,16 +114,20 @@ def index_transactions(web3_client: web3.Web3, db, num_blocks=None):
                     block.number,
                     transaction["from"],
                     transaction.to,
-                    transaction.gas,
-                    transaction.gasPrice,
+                    str(transaction.gas),
+                    str(transaction.gasPrice),
                     transaction.input,
                     transaction.nonce,
                     transaction.transactionIndex,
-                    transaction.value,
+                    str(transaction.value),
                 )
                 for transaction in block.transactions
             ]
-            cur.executemany(insert_transaction_query, transaction_tuples)
+            try:
+                cur.executemany(insert_transaction_query, transaction_tuples)
+            except:
+                print(transaction_tuples)
+                raise
             db.commit()
     except Exception:
         db.rollback()
