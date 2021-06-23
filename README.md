@@ -50,3 +50,26 @@ The invocation we used on stream:
 python account_info.py --ipc "$PWD/data/geth.ipc" --index lol.db "0x2e337e0fb68f5e51ce9295e80bcd02273d7420c4"
 ```
 
+### Deploying smart contracts
+
+This repository contains a sample smart contract ([`auction.vy`](./auction.vy)), written in Vyper, along with
+a deployment script ([`deploy_auction.py`](./deploy_auction.py)) that you can use to deploy it to your private
+network.
+
+The smart contract was taken from here: https://ethereum.org/en/developers/docs/smart-contracts/languages/
+
+To get gas estimate for deployment:
+```bash
+python deploy_auction.py --ipc <path to your geth.ipc> -a <account to deploy from> --contract auction.vy <beneficiary address> <auction start timestamp> <auction end timestamp>
+```
+
+This will return a gas estimate:
+```
+Connecting to node over IPC socket: /home/zomglings/ethnet/data_2/geth.ipc
+Estimated gas required: 229238
+```
+
+To publish the smart contract:
+```bash
+python deploy_auction.py --ipc <path to your geth.ipc> -a <account to deploy from> --contract auction.vy <beneficiary address> <auction start timestamp> <auction end timestamp> --gas 229238
+```
