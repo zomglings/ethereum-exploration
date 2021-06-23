@@ -98,6 +98,8 @@ if __name__ == "__main__":
 
     reporter.system_report()
 
+    # Relevant documentation:
+    # https://web3py.readthedocs.io/en/stable/web3.eth.html#web3.eth.Eth.filter
     pending_transactions_filter = web3_client.eth.filter("pending")
 
     while True:

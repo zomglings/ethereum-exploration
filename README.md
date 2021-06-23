@@ -73,3 +73,12 @@ To publish the smart contract:
 ```bash
 python deploy_auction.py --ipc <path to your geth.ipc> -a <account to deploy from> --contract auction.vy <beneficiary address> <auction start timestamp> <auction end timestamp> --gas 229238
 ```
+
+### Reporting on pending transactions
+
+[`txpool_reports.py`](./txpool_reports.py) fires reports to Bugout every time a new transaction enters a node's transaction pool.
+
+To run this reporter against a node, attach it to the IPC socket for that node as follows:
+```bash
+python txpool_reports.py --ipc ~/ethnet/data_0/geth.ipc <reporting client ID>
+```
